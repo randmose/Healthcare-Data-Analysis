@@ -18,7 +18,9 @@ from sklearn.metrics import (
 from sklearn.preprocessing import StandardScaler
 import warnings
 
-warnings.filterwarnings('ignore')
+# Suppress specific warnings that we expect and handle
+warnings.filterwarnings('ignore', category=FutureWarning)
+warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
 
 
 class DiseaseOutbreakPredictor:
@@ -406,8 +408,16 @@ def prepare_features_and_target(
     X = data[feature_columns]
     y = data[target_column]
     
+    # Check if we should stratify (for classification with reasonable class counts)
+    should_stratify = False
+    if y.dtype == 'object' or len(y.unique()) < 10:
+        # Ensure no NaN values in target for stratification
+        if not y.isnull().any():
+            should_stratify = True
+    
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=test_size, random_state=random_state, stratify=y if y.dtype == 'object' or len(y.unique()) < 10 else None
+        X, y, test_size=test_size, random_state=random_state, 
+        stratify=y if should_stratify else None
     )
     
     print(f"Train set size: {len(X_train)}, Test set size: {len(X_test)}")

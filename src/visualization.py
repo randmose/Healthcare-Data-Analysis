@@ -11,7 +11,8 @@ import seaborn as sns
 from typing import Optional, List, Tuple
 import warnings
 
-warnings.filterwarnings('ignore')
+# Suppress specific matplotlib warnings
+warnings.filterwarnings('ignore', category=UserWarning, module='matplotlib')
 
 # Set style
 sns.set_style("whitegrid")

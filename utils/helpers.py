@@ -231,7 +231,8 @@ def print_dataset_info(data: pd.DataFrame, name: str = "Dataset"):
 
 def validate_data_quality(data: pd.DataFrame, 
                          max_missing_pct: float = 0.5,
-                         check_duplicates: bool = True) -> Dict[str, Any]:
+                         check_duplicates: bool = True,
+                         issue_penalty: int = 10) -> Dict[str, Any]:
     """
     Validate data quality and return quality report.
     
@@ -239,6 +240,7 @@ def validate_data_quality(data: pd.DataFrame,
         data: Input DataFrame
         max_missing_pct: Maximum allowed missing percentage per column
         check_duplicates: Whether to check for duplicate rows
+        issue_penalty: Points to deduct per issue found (default: 10)
         
     Returns:
         Dictionary with quality metrics and issues
@@ -274,7 +276,8 @@ def validate_data_quality(data: pd.DataFrame,
             'columns': constant_cols
         })
     
-    quality_score = 100 - (len(issues) * 10)  # Simple quality score
+    # Calculate quality score: start at 100, deduct points for each issue
+    quality_score = 100 - (len(issues) * issue_penalty)
     
     return {
         'quality_score': max(0, quality_score),

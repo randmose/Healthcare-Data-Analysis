@@ -9,7 +9,9 @@ import numpy as np
 from typing import Tuple, Optional, List
 import warnings
 
-warnings.filterwarnings('ignore')
+# Suppress specific warnings that we expect and handle
+warnings.filterwarnings('ignore', category=FutureWarning)
+warnings.filterwarnings('ignore', category=pd.errors.PerformanceWarning)
 
 
 class HealthDataPreprocessor:
@@ -68,7 +70,9 @@ class HealthDataPreprocessor:
             elif strategy == 'median' and df[col].dtype in ['int64', 'float64']:
                 df[col].fillna(df[col].median(), inplace=True)
             elif strategy == 'mode':
-                df[col].fillna(df[col].mode()[0] if not df[col].mode().empty else df[col], inplace=True)
+                mode_values = df[col].mode()
+                fill_value = mode_values[0] if len(mode_values) > 0 else (0 if df[col].dtype in ['int64', 'float64'] else 'Unknown')
+                df[col].fillna(fill_value, inplace=True)
             elif strategy == 'drop':
                 df.dropna(subset=[col], inplace=True)
         
