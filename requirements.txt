@@ -1,0 +1,28 @@
+# Core data analysis libraries
+pandas>=1.5.0
+numpy>=1.23.0
+scipy>=1.9.0
+
+# Machine learning
+scikit-learn>=1.1.0
+xgboost>=1.7.0
+
+# Visualization
+matplotlib>=3.6.0
+seaborn>=0.12.0
+plotly>=5.11.0
+
+# Data manipulation and utilities
+openpyxl>=3.0.10
+xlrd>=2.0.1
+
+# Jupyter notebooks
+jupyter>=1.0.0
+notebook>=6.5.0
+ipykernel>=6.17.0
+
+# Statistical analysis
+statsmodels>=0.13.0
+
+# Progress bars
+tqdm>=4.64.0
